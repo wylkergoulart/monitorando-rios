@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login Admin - Monitorando Rios</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header><h1>Login Administrativo</h1></header>
+  <main>
+    <form id="formAdminLogin">
+      <label for="usuario">Usuário</label>
+      <input type="text" id="usuario" required />
+
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" required />
+
+      <button type="submit" class="btn">Entrar</button>
+    </form>
+  </main>
+
+  <script>
+    const adminUser = "admin";
+    const adminPass = "admin123";
+
+    document.getElementById("formAdminLogin").addEventListener("submit", e => {
+      e.preventDefault();
+
+      const usuario = document.getElementById("usuario").value.trim();
+      const senha = document.getElementById("senha").value.trim();
+
+      if (usuario === adminUser && senha === adminPass) {
+        sessionStorage.setItem("adminLogado", "true");
+        window.location.href = "admin.html";
+      } else {
+        alert("Usuário ou senha incorretos.");
+      }
+    });
+  </script>
+</body>
+</html>

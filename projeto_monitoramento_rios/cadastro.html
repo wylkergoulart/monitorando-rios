@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro - Monitorando Rios</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header><h1>Cadastro de Usuário</h1></header>
+  <main>
+    <form id="formCadastro">
+      <label for="nome">Nome completo</label>
+      <input type="text" id="nome" required />
+
+      <label for="usuario">Usuário</label>
+      <input type="text" id="usuario" required />
+
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" required />
+
+      <button type="submit" class="btn">Cadastrar</button>
+    </form>
+  </main>
+
+  <script>
+    const formCadastro = document.getElementById("formCadastro");
+
+    formCadastro.addEventListener("submit", e => {
+      e.preventDefault();
+
+      const nome = document.getElementById("nome").value.trim();
+      const usuario = document.getElementById("usuario").value.trim();
+      const senha = document.getElementById("senha").value.trim();
+
+      if (!nome || !usuario || !senha) {
+        alert("Por favor, preencha todos os campos.");
+        return;
+      }
+
+      let usuarios = JSON.parse(localStorage.getItem("usuarios") || "[]");
+
+      // Verificar se usuário já existe
+      if (usuarios.some(u => u.usuario === usuario)) {
+        alert("Usuário já cadastrado.");
+        return;
+      }
+
+      usuarios.push({ nome, usuario, senha });
+      localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+      alert("Cadastro realizado com sucesso!");
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>

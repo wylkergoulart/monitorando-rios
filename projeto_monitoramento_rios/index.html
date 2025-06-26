@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Monitorando Rios</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Monitorando Rios para uma Extrema Saudável</h1>
+    <nav>
+      <ul>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="cadastro.html">Cadastro</a></li>
+        <li><a href="denuncia.html" id="linkDenuncia">Fazer Denúncia</a></li>
+        <li><a href="admin-login.html">Painel Administrativo</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="intro">
+    <h2>Bem-vindo ao projeto!</h2>
+    <p>Participe da conservação dos rios de Extrema-MG. Faça sua denúncia, acompanhe o andamento e ajude a manter nosso meio ambiente saudável.</p>
+  </main>
+
+  <script>
+    // Verifica se há um usuário logado
+    const usuarioLogado = JSON.parse(sessionStorage.getItem("usuarioLogado"));
+
+    // Se não estiver logado, redireciona ao login ao clicar em "Fazer Denúncia"
+    const linkDenuncia = document.getElementById("linkDenuncia");
+
+    if (!usuarioLogado) {
+      linkDenuncia.href = "login.html";
+    } else {
+      linkDenuncia.href = "denuncia.html";
+    }
+  </script>
+</body>
+</html>

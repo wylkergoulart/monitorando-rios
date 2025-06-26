@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Painel Admin - Monitorando Rios</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header><h1>Painel Administrativo</h1></header>
+  <main>
+    <div id="kanban">
+      <div class="coluna" id="Pendente">
+        <h3>Pendente</h3>
+      </div>
+      <div class="coluna" id="Em Análise">
+        <h3>Em Análise</h3>
+      </div>
+      <div class="coluna" id="Resolvida">
+        <h3>Resolvida</h3>
+      </div>
+    </div>
+    <button id="btnSair" class="botao-outline">Sair</button>
+  </main>
+
+  <script>
+    // Simples controle de login admin hardcoded
+    const adminUser = "admin";
+    const adminPass = "admin123";
+
+    function verificarAdmin() {
+      if (!sessionStorage.getItem("adminLogado")) {
+        window.location.href = "admin-login.html";
+      } else {
+        carregarKanban();
+      }
+    }
+
+    function carregarKanban() {
+      const denuncias = JSON.parse(localStorage.getItem("denuncias") || "[]");
+
+      ["Pendente", "Em Análise", "Resolvida"].forEach(status => {
+        const coluna = document.getElementById(status);
+        coluna.innerHTML = "<h3>" + status + "</h3>";
+      });
+
+      denuncias.forEach((d, i) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.draggable = true;
+        card.dataset.index = i;
+        card.innerHTML = `
+          <strong>${d.descricao}</strong><br>
+          <em>${d.endereco}</em><br>
+          ${d.imagem ? `<img src="${d.imagem}" style="max-width:100%;">` : ""}
+          <p><small>Por: ${d.usuario}</small></p>
+          <button class="botao-outline btnExcluir" data-index="${i}">Excluir</button>
+        `;
+
+        card.addEventListener("dragstart", e => {
+          e.dataTransfer.setData("text/plain", i);
+        });
+
+        document.getElementById(d.status).appendChild(card);
+      });
+
+      // Drag and drop
+      document.querySelectorAll(".coluna").forEach(col => {
+        col.ondragover = e => e.preventDefault();
+
+        col.ondrop = e => {
+          e.preventDefault();
+          const index = e.dataTransfer.getData("text");
+          const denuncias = JSON.parse(localStorage.getItem("denuncias") || "[]");
+
+          if (denuncias[index]) {
+            denuncias[index].status = col.id;
+            localStorage.setItem("denuncias", JSON.stringify(denuncias));
+            carregarKanban();
+          }
+        };
+      });
+
+      // Botão excluir
+      document.querySelectorAll(".btnExcluir").forEach(btn => {
+        btn.onclick = e => {
+          const idx = e.target.dataset.index;
+          let denuncias = JSON.parse(localStorage.getItem("denuncias") || "[]");
+          denuncias.splice(idx, 1);
+          localStorage.setItem("denuncias", JSON.stringify(denuncias));
+          carregarKanban();
+        };
+      });
+    }
+
+    document.getElementById("btnSair").addEventListener("click", () => {
+      sessionStorage.removeItem("adminLogado");
+      window.location.href = "index.html";
+    });
+
+    // Verificar login admin no início
+    verificarAdmin();
+  </script>
+</body>
+</html>

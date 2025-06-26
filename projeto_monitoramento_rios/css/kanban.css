@@ -1,0 +1,20 @@
+#kanban {
+  display: flex;
+  gap: 20px;
+}
+.coluna {
+  width: 30%;
+  background: #f1f8e9;
+  border: 1px solid #c5e1a5;
+  border-radius: 8px;
+  padding: 10px;
+  min-height: 300px;
+}
+.card {
+  background: #ffffff;
+  border: 1px solid #aed581;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: move;
+}

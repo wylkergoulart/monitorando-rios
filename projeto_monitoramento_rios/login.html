@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Monitorando Rios</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header><h1>Login de Usuário</h1></header>
+  <main>
+    <form id="formLogin">
+      <label for="usuario">Usuário</label>
+      <input type="text" id="usuario" required />
+
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" required />
+
+      <button type="submit" class="btn">Entrar</button>
+    </form>
+  </main>
+
+  <script>
+    const formLogin = document.getElementById("formLogin");
+
+    formLogin.addEventListener("submit", e => {
+      e.preventDefault();
+
+      const usuario = document.getElementById("usuario").value.trim();
+      const senha = document.getElementById("senha").value.trim();
+
+      let usuarios = JSON.parse(localStorage.getItem("usuarios") || "[]");
+
+      const user = usuarios.find(u => u.usuario === usuario && u.senha === senha);
+
+      if (user) {
+        sessionStorage.setItem("usuarioLogado", JSON.stringify(user));
+        alert("Login realizado com sucesso!");
+        window.location.href = "denuncia.html";
+      } else {
+        alert("Usuário ou senha incorretos.");
+      }
+    });
+  </script>
+</body>
+</html>
